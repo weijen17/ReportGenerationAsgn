@@ -10,11 +10,6 @@ from src.agents import main_workflow1,main_workflow2
 
 save_path__bs = settings.BS_DIR
 
-plot_dir = settings.PLOT_DIR
-save_path__bs = settings.DF_DIR
-save_path__bs = settings.JSON_DIR
-
-
 if __name__ == "__main__":
 
     # Remove prior artifacts

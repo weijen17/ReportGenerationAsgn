@@ -23,7 +23,7 @@
 1. Clone the repository:
 ```bash
 git clone 
-cd ReportGeneration
+cd ReportGenerationAsgn
 ```
 
 2. Create a virtual environment:

@@ -1,0 +1,5 @@
+The business question: sales performance trend over time. Dimension to be considered is by year, and year plus region
+The business question: highlight top-performing and underperforming models or markets.
+The business question: explore key drivers of sales (e.g., price, market segment, or model type), compare across dimensions.Market segment refers to color, fuel_type, transmission and engine_size. For price and engine_size, use Price_USD_Category and Engine_Size_L_Category fields.
+The business question: identify product market fit of each region.
+The business question: shift in consumer preference over time (e.g., model,color, fuel_type, transmission, Engine_Size_L_Category or Price_USD_Category). Use sales percentage as main metric.

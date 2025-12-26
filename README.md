@@ -1,0 +1,136 @@
+# ReportGeneration
+
+- Generate findings, figures and conclusion based on raw data (excel) and business questions.
+- A final report in markdown format will be generated.
+
+## Features
+
+- **Data Aggregation**: LLM performs data aggregation according to subtask of business question
+- **Plot generation**: LLM generates plot using matplotlib or seaborn based on aggregated data
+- **Finding Generation**: LLM generates findings and conclusion based on aggregated data or input findings.
+- **Finding Refinement**: LLM will consolidate and refine findings for one round, in order to ensure cohesiveness and conciseness.
+
+## Prerequisites
+
+- Python 3.12+
+- Docker and Docker Compose (for containerized deployment)
+
+
+## Setup
+
+### Local Setup
+
+1. Clone the repository:
+```bash
+git clone 
+cd ReportGeneration
+```
+
+2. Create a virtual environment:
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+3. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+4. Set up environment variables:
+```bash
+cp .env.example .env
+# Edit .env and add your API keys
+```
+
+5. Run the application:
+```bash
+python main.py
+```
+
+### Docker Setup
+
+1. Set up environment variables:
+```bash
+cp .env.example .env
+# Edit .env and add your API keys
+`````
+
+2. Build and run with Docker Compose:
+```bash
+docker-compose up --build
+```
+
+3. Curl Usage (Pending):
+```bash
+curl -X POST http://localhost:5000/research 
+```
+
+## Usage -- Important !
+
+1. Place raw_data in **input** directory. Add or remove business question in the **bs_question.txt**, where each line represents a business question.
+2. Amend env file accordingly, especially the INPUT_FILENAME which refers to the filename of raw_data.
+3. After executing main.py, the generated final report will be in **artifact/report** directory.
+
+
+## Module Workflow
+
+```
+**Workflow1**
+┌─────────────┐
+│   Input     │──► raw data and business questions
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│  Planning   │──► Decompose business question into subtask
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│ Subtask Exec│──► Execute subtask, which involves data aggregation, plot generation, and insight generation
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│Finding Conso│──► Consolidate and re-organize all subtask findings into one coherent storyline that can address the business question
+└──────┬──────┘
+       │
+       │
+       ▼
+ **Workflow2**
+┌─────────────┐
+│ Plot Select │──► Organize all previous findings in markdown format, and select relevant figures.
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│  Conclusion │──► Generate conclusion, (subjective) actionable insights and refine the storyline to be more cohesive
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│   Result    │──► Output report in markdown format
+└─────────────┘
+```
+
+
+# File System Structure
+```
+project/
+├── artifact/       # Generated outputs (dataframes, plots, reports)
+│   ├── df/         # Saved aggregated data in df pickle
+│   ├── plot/       # Saved figures and plots
+│   ├── json/       # Intermediate finding and metadata
+│   ├── report/     # **Final Report in markdown format**
+├── eval/           # Evaluation test scripts
+├── input/          # Input data files
+│   ├── business_question/  # **Business question to be addressed. Each line represents a business question**
+│   ├── raw_data/   # **Raw Data**
+├── src/            # Source code
+│   ├── agents/     # Primary Agents Source Code
+│   ├── assets/     # Static resources (prompts, templates)
+│   ├── configs/    # Configuration files and environmental variables
+│   └── tools/      # Utility functions
+└── tests/          # Test suites ongoing (boilerplate code)
+```

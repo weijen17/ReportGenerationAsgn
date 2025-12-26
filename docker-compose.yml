@@ -1,18 +1,17 @@
 version: '3.8'
 
 services:
-  research-agent:
+  report-agent:
     build: .
-    container_name: langgraph-research-agent
+    container_name: report-generator
     env_file:
       - .env
-    - ports:
+    ports:
         - "5000:5000"
     volumes:
-      - ./outputs:/app/outputs
+      - ./artifact:/app/artifact
       - ./src:/app/src
       - ./main.py:/app/main.py
 #    environment:
 #      - OPENAI_API_KEY=${OPENAI_API_KEY}
-#      - SERPER_API_KEY=${SERPER_API_KEY}
     restart: unless-stopped

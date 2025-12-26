@@ -56,8 +56,8 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t two-agent-system:test .
+        docker build -t agent-system:test .
 
     - name: Test Docker image
       run: |
-        docker run --rm two-agent-system:test python -c "import src; print('Docker build successful!')"
+        docker run --rm agent-system:test python -c "import src; print('Docker build successful!')"

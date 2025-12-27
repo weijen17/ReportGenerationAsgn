@@ -32,9 +32,9 @@ if __name__ == "__main__":
         for attempt in range(3):
             try:
                 main_workflow1(_bs,enum)
-                break  # success → stop retrying
+                break
             except Exception as e:
-                if attempt == 2:  # after 3rd try, re-raise or handle
+                if attempt == 2:
                     raise
     main_workflow2()
 

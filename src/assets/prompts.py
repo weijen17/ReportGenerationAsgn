@@ -34,7 +34,7 @@ Generate a valid pandas query using dataframe df1 based on my analytical request
 1. Use concise and correct pandas syntax
 2. Use fields from the dataset
 3. The output should be executable Python code only (no explanation)
-4. Always assign the result to a new dataframe variable and end with .reset_index() when appropriate
+4. Always assign the result to a new dataframe variable
 5. Always start with df1=pd.read_excel('{input_name}') and treat year variable as string.
 6. Each output should use ; as delimiter
 7. Do not wrap the output in any markdown code block. Do not output ```python ``` !!!!!!
@@ -51,7 +51,7 @@ You will be provided a dataframe name and its value. You must not create a new d
 1. Use line graph for continuous independent x variable (dimension).Treat Year as continuous variable.
 2. Use bar graph for categorical independent x variable (dimension). Use pie chart for categorical variable that has fewer than 5 categories. 
 3. For data with both continuous and categorical independent variables, plot the continuous variable on the x-axis and create separate colored lines for each category, with a legend identifying each category by its line color.
-Use stacked bar chart for time series, (e.g., if one of the independent variable is year and another is categorial variable.) 
+Use stacked bar chart for time series or sales percentage (e.g., if one of the independent variable is year and another is categorial variable.) 
 4. The dependent y variable should always be sales.
 5. Ensure there is legend, and the legend is on the right side of the plot. Use plt.tight_layout() to ensure legends and plots are displayed in full.
 6. Include a brief title for the plot.
@@ -108,8 +108,9 @@ You will be provided business question, as well as findings from subtasks. You h
 3. Present a coherent narrative that connects the individual findings.
 4. Be concise, specific and factual. 
 5. Stay faithful to the subtask findings. Do not include information that is not presented in the data.
-6. Do not provide any subjective insight.
-7. Only output findings in paragraphs, with a maximum of 3 paragraphs. Do not output anything else.
+6. Can retain some of the numbers and figures that can highlight the narrative.
+7. Do not provide any subjective insight.
+8. Only output findings in paragraphs, with a maximum of 3 paragraphs. Do not output anything else.
 '''
 
 system_prompt__plot_selection = '''

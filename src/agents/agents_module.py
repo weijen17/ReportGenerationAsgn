@@ -68,32 +68,52 @@ def subtask_module(task,task_enum,bs_no,l_subtask_artifact):
     save_df_name=save_df_name.as_posix()
 
     task_cmd2 = task_cmd + f'''; {tmp_table_name}.to_pickle("{save_df_name}")'''
+    print(task_cmd2.replace(';', '\n'))
 
     query_res = execute_llm_query(task_cmd2)
     # Access results dynamically
     for var_name, var_value in query_res.items():
-        print(f"{var_name}: {(var_value)}")
+        # print(f"{var_name}: {(var_value)}")
+        var_name, var_value
 
     plot_df_name = var_name
     plot_df_value = var_value
 
+    print(plot_df_name)
+    print(plot_df_value)
+    print('###' * 20)
+
     ##################################################################
     ### Phase3: Plot graph for subtask, and save it
 
-    plot_input = f'''The dataframe name is {plot_df_name}, please use this dataframe name as your data. The exact table is as follows: \n{plot_df_value}'''
-    plot_response = llm.invoke([SystemMessage(content=system_prompt__python_plot),
-                            HumanMessage(content=plot_input)])
-    plot_cmd = plot_response.content
-    plot_cmd2=plot_cmd.replace(';','\n')
-    # print(plot_cmd2)
+    for attempt in range(3):
+        try:
+            plot_input = f'''The dataframe name is {plot_df_name}, please use this dataframe name as your data. The exact table is as follows: \n{plot_df_value}'''
+            plot_response = llm.invoke([SystemMessage(content=system_prompt__python_plot),
+                                        HumanMessage(content=plot_input)])
+            plot_cmd = plot_response.content
+            plot_cmd2 = plot_cmd.replace(';', '\n')
+            # print(plot_cmd2)
 
-    save_plot_name = save_path__plot / f'''bs{bs_no}_task{task_no}.png'''
-    save_plot_name=save_plot_name.as_posix()
-    full_plot_cmd = task_cmd+';'+plot_cmd+f';plt.savefig("{save_plot_name}", dpi=300)'+';plt.close()'
+            save_plot_name = save_path__plot / f'''bs{bs_no}_task{task_no}.png'''
+            save_plot_name = save_plot_name.as_posix()
+            full_plot_cmd = task_cmd + ';' + plot_cmd + f';plt.savefig("{save_plot_name}", dpi=300)' + ';plt.close()'
+            print(full_plot_cmd.replace(';', '\n'))
 
-    plot_res = execute_llm_query(full_plot_cmd)
-    for var_name, var_value in plot_res.items():
-        print(f"{var_name}: {(var_value)}")
+            plot_res = execute_llm_query(full_plot_cmd)
+            for var_name, var_value in plot_res.items():
+                # print(f"{var_name}: {(var_value)}")
+                var_name, var_value
+
+            print(var_name)
+            print(var_value)
+            print('###' * 20)
+            break
+        except Exception as e:
+            if attempt == 2:
+                raise
+
+
 
     ##################################################################
     ### Phase4: Generate finding for subtask

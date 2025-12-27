@@ -27,6 +27,7 @@ class Settings:
     REPORT_DIR: Path = BASE_DIR / "artifact/report"
     RAW_DATA_DIR: Path = BASE_DIR / "input/raw_data"
     BS_DIR: Path = BASE_DIR / "input/business_question"
+    EVAL_DIR: Path = BASE_DIR / "eval/eval_result"
 
     # Input
     INPUT_FILENAME: str = os.getenv("INPUT_FILENAME", "BMW_processed_data_v1.0.xlsx")

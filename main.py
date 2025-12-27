@@ -1,5 +1,5 @@
 """
-Main entry point for the Report Agent System
+Main entry point for the LLM Report System
 """
 
 import os

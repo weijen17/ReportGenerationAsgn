@@ -11,6 +11,8 @@ from typing import List
 from src.config.settings import settings
 from src.assets.prompts import system_prompt__data_desc,system_prompt__python_exec,system_prompt__python_plot,system_prompt__planner,system_prompt__subtask_finding,system_prompt__finding_consolidation,system_prompt__plot_selection,system_prompt__report_generation
 
+# pd.set_option('display.max_rows', None)
+# pd.set_option('display.max_columns', None)
 
 save_path__df = settings.DF_DIR
 save_path__plot = settings.PLOT_DIR
@@ -87,7 +89,7 @@ def subtask_module(task,task_enum,bs_no,l_subtask_artifact):
 
     save_plot_name = save_path__plot / f'''bs{bs_no}_task{task_no}.png'''
     save_plot_name=save_plot_name.as_posix()
-    full_plot_cmd = task_cmd+';'+plot_cmd+f';plt.savefig("{save_plot_name}", dpi=300, bbox_inches="tight")'+';plt.close()'
+    full_plot_cmd = task_cmd+';'+plot_cmd+f';plt.savefig("{save_plot_name}", dpi=300)'+';plt.close()'
 
     plot_res = execute_llm_query(full_plot_cmd)
     for var_name, var_value in plot_res.items():

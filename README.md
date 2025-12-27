@@ -61,16 +61,19 @@ cp .env.example .env
 docker-compose up --build
 ```
 
-3. Curl Usage (Pending):
-```bash
-curl -X POST http://localhost:5000/research 
-```
-
-## Usage -- Important !
+## Main Application Usage
 
 1. Place raw_data in **input** directory. Add or remove business question in the **bs_question.txt**, where each line represents a business question.
 2. Amend env file accordingly, especially the INPUT_FILENAME which refers to the filename of raw_data.
 3. After executing main.py, the generated final report will be in **artifact/report** directory.
+
+
+## Evaluation Steps
+
+1. Bash run "python eval_exec.py". The result will be available in **eval/eval_result** directory.
+2. The available metrics are ['coherence','conciseness','coverage','faithfulness'].
+3. Report and subtask level evaluation are available. 
+By default, faithfulness is evaluated at the subtask level, while coherence, conciseness, and coverage are evaluated at the report level. Have to modify eval_exec.py for other variation.
 
 
 ## Module Workflow
@@ -100,12 +103,12 @@ curl -X POST http://localhost:5000/research
        ▼
  **Workflow2**
 ┌─────────────┐
-│ Plot Select │──► Organize all previous findings in markdown format, and select relevant figures.
+│ Formatting  │──► Organize all previous findings in markdown format, and select relevant figures.
 └──────┬──────┘
        │
        ▼
 ┌─────────────┐
-│  Conclusion │──► Generate conclusion, (subjective) actionable insights and refine the storyline to be more cohesive
+│  Conclude   │──► Generate conclusion, (subjective) actionable insights and refine the storyline to be more cohesive
 └──────┬──────┘
        │
        ▼
@@ -118,15 +121,17 @@ curl -X POST http://localhost:5000/research
 # File System Structure
 ```
 project/
-├── artifact/       # Generated outputs (dataframes, plots, reports)
-│   ├── df/         # Saved aggregated data in df pickle
+├── artifact/       # Generated outputs and intermediate artifacts (dataframes, plots, reports)
+│   ├── df/         # Saved aggregated data in pickle format
 │   ├── plot/       # Saved figures and plots
-│   ├── json/       # Intermediate finding and metadata
+│   ├── json/       # Intermediate and overall findings, and metadata
 │   ├── report/     # **Final Report in markdown format**
 ├── eval/           # Evaluation test scripts
+│   ├── eval_result/# Evaluation result files
 ├── input/          # Input data files
 │   ├── business_question/  # **Business question to be addressed. Each line represents a business question**
 │   ├── raw_data/   # **Raw Data**
+├── logs/           # Logs
 ├── src/            # Source code
 │   ├── agents/     # Primary Agents Source Code
 │   ├── assets/     # Static resources (prompts, templates)

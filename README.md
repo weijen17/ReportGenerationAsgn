@@ -58,6 +58,10 @@ cp .env.example .env
 
 2. Build and run with Docker Compose:
 ```bash
+docker-compose run --rm report-agent
+
+or
+
 docker-compose up --build
 ```
 

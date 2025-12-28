@@ -30,10 +30,10 @@ EXPOSE 5000
 # VOLUME ["/app/outputs", "/app/src"]
 
 # Run the application
-CMD ["python", "main.py"]
+#CMD ["python", "main.py"]
 
-# Perform Evaluation
-#CMD ["python", "eval_exec.py"]
+# Run the application and perform evaluation
+ CMD sh -c "python main.py && python eval_exec.py"
 
 # for flask application
 # CMD ["python", "app.py"]

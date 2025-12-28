@@ -32,5 +32,8 @@ EXPOSE 5000
 # Run the application
 CMD ["python", "main.py"]
 
+# Perform Evaluation
+CMD ["python", "eval_exec.py"]
+
 # for flask application
 # CMD ["python", "app.py"]

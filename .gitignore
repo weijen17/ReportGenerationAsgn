@@ -41,8 +41,8 @@ ENV/
 .DS_Store
 Thumbs.db
 
-# Logs
-*.log
+## Logs
+#*.log
 
 # Folder
 /draft/

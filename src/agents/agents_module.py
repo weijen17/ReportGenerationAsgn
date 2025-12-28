@@ -7,6 +7,7 @@ from pathlib import Path
 import json
 from pydantic import BaseModel, Field
 from typing import List
+import logging
 
 from src.config.settings import settings
 from src.assets.prompts import system_prompt__data_desc,system_prompt__python_exec,system_prompt__python_plot,system_prompt__planner,system_prompt__subtask_finding,system_prompt__finding_consolidation,system_prompt__plot_selection,system_prompt__report_generation
@@ -21,6 +22,18 @@ save_path__report = settings.REPORT_DIR
 save_path__raw_data = settings.RAW_DATA_DIR
 
 REPORT_NAME = settings.REPORT_NAME
+LOG_FILE = os.path.join(settings.LOG_DIR, "app.log")
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,                           # logging level
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    handlers=[
+        logging.FileHandler(LOG_FILE),           # save to file
+        logging.StreamHandler()                  # also print to console
+    ]
+)
+
 
 llm = init_chat_model(model=settings.MODEL_NAME, model_provider=settings.MODEL_PROVIDER, temperature=settings.TEMPERATURE,top_p=settings.TOP_P)
 
@@ -33,16 +46,19 @@ class PlannerOutput(BaseModel):
 
 def planner_module(var_bs_question):
     # llm_with_structure  = llm.with_structured_output(PlannerOutput)
+    logging.info(f"WF1 -- Initiate Planner Module...")
     planner_response = llm.invoke([SystemMessage(content=system_prompt__data_desc),
                                    SystemMessage(content=system_prompt__planner),
                                    HumanMessage(content=var_bs_question)])
 
     l_task = planner_response.content
     l_task = eval(l_task)
+    logging.info(f"WF1 -- Planner Module completed...")
     return l_task
 
 
 def subtask_module(task,task_enum,bs_no,l_subtask_artifact):
+    logging.info(f"WF1 -- Initiate Subtask {task_enum} Execution Module ...")
     task_no = task_enum
     task_response = llm.invoke([SystemMessage(content=system_prompt__data_desc),
                            SystemMessage(content=system_prompt__python_exec),
@@ -82,6 +98,7 @@ def subtask_module(task,task_enum,bs_no,l_subtask_artifact):
     print(plot_df_name)
     print(plot_df_value)
     print('###' * 20)
+    logging.info(f"WF1 -- - Subtask {task_enum} Python Code Generation completed ...")
 
     ##################################################################
     ### Phase3: Plot graph for subtask, and save it
@@ -113,7 +130,7 @@ def subtask_module(task,task_enum,bs_no,l_subtask_artifact):
             if attempt == 2:
                 raise
 
-
+    logging.info(f"WF1 -- - Subtask {task_enum} Plot Generation completed ...")
 
     ##################################################################
     ### Phase4: Generate finding for subtask
@@ -123,6 +140,9 @@ def subtask_module(task,task_enum,bs_no,l_subtask_artifact):
                                 HumanMessage(content=subfinding_input)])
     subfinding_res = subfinding_response.content
     l_subtask_artifact.append({'subtask_no':task_no,'subtask':task,'finding':subfinding_res,'df':save_df_name,'plot':save_plot_name})
+    logging.info(f"WF1 -- - Subtask {task_enum} Finding Generation completed ...")
+    logging.info(f"WF1 -- Subtask {task_enum} Execution Module completed ...")
+
     return l_subtask_artifact
 
 
@@ -130,6 +150,7 @@ def subtask_module(task,task_enum,bs_no,l_subtask_artifact):
 def overall_finding_module(l_subtask_artifact,var_bs_question):
     ##################################################################
     ### Phase5: Consolidate and sort out subtasks' findings
+    logging.info("WF1 -- Initiate Findings Condolidation Module ...")
     overall_finding_input = f'### {var_bs_question} '
     for enum,_ in enumerate(l_subtask_artifact):
         subtask = _.get('subtask')
@@ -140,6 +161,7 @@ def overall_finding_module(l_subtask_artifact,var_bs_question):
                                 SystemMessage(content=system_prompt__finding_consolidation),
                                 HumanMessage(content=overall_finding_input)])
     overall_finding_res = overall_finding_response.content
+    logging.info("WF1 -- Findings Condolidation Module completed ...")
     return overall_finding_res
 
 def save_module(overall_finding_res,task_enum,l_subtask_artifact,bs_no,var_bs_question):
@@ -166,6 +188,7 @@ def save_module(overall_finding_res,task_enum,l_subtask_artifact,bs_no,var_bs_qu
 
     with open(save_json_name, 'w') as f:
         json.dump(overall_output, f, indent=4)
+    logging.info("WF1 -- Intermediate and overall findings and metadata saved ...")
 
 
 def main_workflow1(var_bs_question,bs_no):
@@ -185,6 +208,7 @@ def main_workflow1(var_bs_question,bs_no):
 ### Phase7: Report Generation
 
 def generate_markdown_and_plot_module(overall_output):
+    logging.info("WF2 -- Initiate Formatting Module ...")
     ### Phase7a: markdown format + plot selection
     findings_markdown=''
     _counter=1
@@ -205,21 +229,22 @@ def generate_markdown_and_plot_module(overall_output):
                         f'{main_finding}\n\n')
         findings_markdown +=plot_selection_res
         findings_markdown +='\n\n\n'
+    logging.info("WF2 -- Formatting and Plot Selection Module completed ...")
     return findings_markdown
 
 def conclusion_and_report_output_module(findings_markdown):
     ### Phase7b: final report that contains generated conclusion and actionable insight
+    logging.info("WF2 -- Initiate Concluding Module ...")
     conclusion_input = f'''Please find the business questions and findings of markdown file as follows:/n/n{findings_markdown}'''
     conclusion_response = llm.invoke([SystemMessage(content=system_prompt__report_generation),
                                           HumanMessage(content=conclusion_input)])
     conclusion_res = conclusion_response.content
     final_report = conclusion_res
 
-
     save_report_name = REPORT_NAME.as_posix()
     with open(save_report_name, "w", encoding="utf-8") as f:
         f.write(final_report)
-
+    logging.info("WF2 -- Concluding Module completed ...")
 
 def main_workflow2():
     save_json_name = save_path__json / '''info.json'''

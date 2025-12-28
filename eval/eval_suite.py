@@ -35,6 +35,7 @@ Evaluate the following report on a scale of 1-5 for conciseness:
 1. A score (1-5)
 2. Brief justification for the score
 3. Output the score and justification in a list, the first element is being the score and the second element being the justification. Do not output anything else.
+4. Do not output anything else, apart from the list
 '''
 
 
@@ -55,6 +56,7 @@ Evaluate the following report on a scale of 1-5 for coherence:
 1. A score (1-5)
 2. Brief justification for the score
 3. Output the score and justification in a list, the first element is being the score and the second element being the justification. Do not output anything else.
+4. Do not output anything else, apart from the list
 '''
 
 
@@ -74,7 +76,8 @@ Evaluate the following report on a scale of 1-5 for coverage:
 ## Instruction
 1. A score (1-5)
 2. Brief justification for the score
-3. Output the score and justification in a list, the first element is being the score and the second element being the justification. Do not output anything else.
+3. Output the score and justification in a list, the first element is being the score and the second element being the justification. 
+4. Do not output anything else, apart from the list
 '''
 
 eval_prompt__faithfulness = f'''
@@ -94,6 +97,7 @@ Evaluate the following report on a scale of 1-5 for faithfulness to data:
 1. A score (1-5)
 2. Brief justification for the score
 3. Output the score and justification in a list, the first element is being the score and the second element being the justification. Do not output anything else.
+4. Do not output anything else, apart from the list
 '''
 
 ########################################################################################################################

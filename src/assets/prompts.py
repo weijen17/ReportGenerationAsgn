@@ -38,6 +38,7 @@ Generate a valid pandas query using dataframe df1 based on my analytical request
 5. Always start with df1=pd.read_excel('{input_name}') and treat year variable as string.
 6. Each output should use ; as delimiter
 7. Do not wrap the output in any markdown code block. Do not output ```python ``` !!!!!!
+8. When analyzing top performing and under performing dimension, just use the aggregated full data and sort it by sales. Do not break it down into two datasets
 '''
 
 system_prompt__python_plot = '''

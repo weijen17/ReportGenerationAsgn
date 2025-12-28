@@ -68,13 +68,13 @@ docker-compose up --build
 3. After executing main.py, the generated final report will be in **artifact/report** directory.
 
 
-## Evaluation Steps
+## Evaluation Usage
 
 1. Bash run "python eval_exec.py". The result will be available in **eval/eval_result** directory.
 2. The available metrics are ['coherence','conciseness','coverage','faithfulness'].
 3. Report and subtask level evaluation are available. 
-By default, faithfulness is evaluated at the subtask level, while coherence, conciseness, and coverage are evaluated at the report level. Have to modify eval_exec.py for other variation.
-
+By default, faithfulness is evaluated at the subtask level, while coherence, conciseness, and coverage are evaluated at the report level. Have to modify eval_exec.py for other variation. 
+4. The eval result for report level will be a list, where the first element being the score (1-5), and the second element being the justification. Whereas for The eval result for subtask level will be a list, where the fourth element being the score (1-5), the fifth element being the justification, and the first 3 elements being the metadata of subtask.
 
 ## Module Workflow
 
@@ -114,6 +114,12 @@ By default, faithfulness is evaluated at the subtask level, while coherence, con
        ▼
 ┌─────────────┐
 │   Result    │──► Output report in markdown format
+└──────┬──────┘
+       │
+       ▼  
+   **Eval**
+┌─────────────┐
+│  Evaluation │──► Evaluate the report or subtask
 └─────────────┘
 ```
 

@@ -138,6 +138,7 @@ project/
 │   ├── business_question/  # **Business question to be addressed. Each line represents a business question**
 │   ├── raw_data/   # **Raw Data**
 ├── logs/           # Logs
+├── misc/           # Miscellaneous files such as executive summary
 ├── src/            # Source code
 │   ├── agents/     # Primary Agents Source Code
 │   ├── assets/     # Static resources (prompts, templates)

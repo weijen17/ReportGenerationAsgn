@@ -21,7 +21,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY . .
 
-RUN mkdir -p outputs
+RUN mkdir -p logs
 
 # Dummy port, even if not actually used
 EXPOSE 5000

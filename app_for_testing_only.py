@@ -1,4 +1,7 @@
 
+####################################################
+## Boilerplate Sample Code. Ignore this code
+####################################################
 
 from flask import Flask, request, jsonify
 from src.agents import main_workflow1,main_workflow2
@@ -33,9 +36,9 @@ def research():
             for attempt in range(3):
                 try:
                     main_workflow1(_bs)
-                    break  # success → stop retrying
+                    break
                 except Exception as e:
-                    if attempt == 2:  # after 3rd try, re-raise or handle
+                    if attempt == 2:
                         raise
         main_workflow2()
         print('Report Generation Successful!')
@@ -46,5 +49,4 @@ def research():
 
 
 if __name__ == "__main__":
-    # You can set host='0.0.0.0' to make it externally accessible
     app.run(host="0.0.0.0", port=5000, debug=True)

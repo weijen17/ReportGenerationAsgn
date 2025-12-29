@@ -14,7 +14,7 @@
 
 - Python 3.12+
 - Docker and Docker Compose (for containerized deployment)
-
+- OpenAI API keys (Default Model Spec: GPT-4o)
 
 ## Setup
 
